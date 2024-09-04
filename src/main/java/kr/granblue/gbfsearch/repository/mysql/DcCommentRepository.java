@@ -1,4 +1,4 @@
-package kr.granblue.gbfsearch.repository;
+package kr.granblue.gbfsearch.repository.mysql;
 
 import kr.granblue.gbfsearch.domain.dc.DcComment;
 import org.springframework.data.jpa.repository.JpaRepository;

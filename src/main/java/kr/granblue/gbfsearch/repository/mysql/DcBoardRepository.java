@@ -1,4 +1,4 @@
-package kr.granblue.gbfsearch.repository;
+package kr.granblue.gbfsearch.repository.mysql;
 
 import kr.granblue.gbfsearch.domain.dc.DcBoard;
 import kr.granblue.gbfsearch.repository.dto.SimilarityWithBoardDtoInterface;
@@ -8,8 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface DcBoardRepository extends JpaRepository<DcBoard, Long> {
+
+    @Query("select b from DcBoard b where b.id in :ids ")
+    List<DcBoard> findAllById(List<Long> ids);
 
     /**
      * 유저 입력 query 와 titleContent 유사도 상위 10개 페이징해서

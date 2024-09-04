@@ -12,15 +12,54 @@
           padding-top: 10px;
       }
 
-      #headerText {
-          text-indent: 1em;
-          font-size: 1.7em;
+      #searchHeader {
+          font-weight: bold;
+          text-align: center;
+          font-size: 2rem;
+      }
+
+      #searchContainer {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          height: 12vh;
+          margin: 0;
+          max-width: 100%;
+      }
+
+      #searchForm {
+          width: 100%;
+      }
+
+      /* 데스크톱 */
+      @media all and (min-width: 768px) {
+          #searchBox {
+              margin-top: 24px;
+              width: 70%;
+          }
+
+          #searchBtn {
+              width: 70px;
+          }
+      }
+
+      /* 모바일 태블릿 */
+      @media all and (max-width: 767px) {
+          #searchBox {
+              margin-top: 24px;
+              width: 80%;
+          }
+
+          #searchBtn {
+              width: 70px;
+          }
       }
 
       #noneContent {
           margin: 0 auto;
           text-align: center;
-          font-size: 20px;
+          font-size: 1.2rem;
       }
 
       #noneContent p {
@@ -44,6 +83,10 @@
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+      }
+
+      .board-title #contentWrap {
+          font-size: 0.9rem;
       }
 
       #write::after {
@@ -202,15 +245,31 @@
 <body id="body">
 <div id="container" class="container">
 
-  <nav th:replace="admin/fragment/fragment.html::nav-fragment">
-  </nav>
 
   <div id="globalAlertMessage" th:data-alertmessage="${alertMessage}">
     <div id="isLogout" th:data-islogout="${isLogout}"></div>
   </div>
 
-  <div id="header">
-    <h2 id="headerText" th:text="${innerSearchCondition.sourceType.getSourceTypeName() + ' 글 목록'}">글 목록</h2>
+  <h2 id="searchHeader">
+    그랑블루 검색기
+  </h2>
+  <div id="searchContainer">
+    <div id="searchBox">
+      <form id="searchForm" action="/search">
+        <div class="input-group mb-3">
+          <input class="form-control" type="search" name="query" placeholder="검색어를 입력하세요." aria-label="Search"
+                 th:value="${searchForm.getQuery()}">
+          <button id="searchBtn" class="btn btn-outline-primary" type="submit">검색</button>
+        </div>
+        <div class="input-group mb-3">
+          <div class="form-check">
+            <input id="recommendedOnly" class="form-check-input" type="checkbox" name="recommendedOnly"
+            th:checked="${searchForm.isRecommendedOnly()}">
+          </div>
+          <label for="recommendedOnly" class="form-check-label">개념글만 보기</label>
+        </div>
+      </form>
+    </div>
   </div>
 
   <hr>
@@ -225,11 +284,11 @@
     <table id="boardTable" class="table">
       <colgroup>
         <col style="width: 6%;">
-        <col style="width: 54%;">
-        <col style="width: 14%;">
+        <col style="width: 56%;">
+        <col style="width: 16%;">
         <col style="width: 6%;">
         <col style="width: 6%;">
-        <col style="width: 14%;">
+        <col style="width: 10%;">
       </colgroup>
 
       <thead>
@@ -252,14 +311,14 @@
         </td>
 
         <td class="board-title">
-          <div>
-            <span class="sourceType-label" th:if="${innerSearchCondition.sourceType == 'ALL'}"
-                  th:text="${'[' + item.sourceType.getSourceTypeName() + ']'}"></span>
+          <div id="titleWrap">
+            <span class="sourceType-label"></span>
             <a class="readLink" href="read.html" th:data-dcnum="${item.getDcNum()}"
                th:text="${item.title}">title</a>
-            <span class="comment-count" th:if="${item.commentCnt > 0}" th:text="${' (' + item.commentCnt + ')'}"> </span>
+            <span class="comment-count" th:if="${item.commentCnt > 0}"
+                  th:text="${' (' + item.commentCnt + ')'}"> </span>
           </div>
-          <div th:if="${item.content != null}">
+          <div id="contentWrap" th:if="${item.content != null}">
             <span>&nbsp;⤷&nbsp; </span>
             <a class="readLink" href="list.html" th:data-dcnum="${item.getDcNum()}"
                th:text="${#strings.abbreviate(item.getCleanedContent(), 30)}"
@@ -274,7 +333,7 @@
 
         <td id="recommendCnt" th:text="${item.recommendCnt}"> 추천수</td>
 
-<!--        TODO 소스타입 DC 로 -->
+        <!--        TODO 소스타입 DC 로 -->
         <td th:if="${item.isToday(item.regDate)}"
             th:text="${#temporals.format(item.regDate, 'HH:mm')}">작성시각
         </td>
@@ -315,29 +374,11 @@
     </button>
   </div>
 
-  <!-- 검색창 -->
-  <div class="row justify-content-center input-group" style="clear:right;width:500px;margin:auto">
-    <form id="searchForm" action="/boards" method="get"
-          th:action="@{/admin/boards}" th:object="${innerSearchCondition}">
-      <input type="hidden" name="page" value="1">
-      <select th:field="*{option}" name="option" class="form-select" id="searchOption">
-        <option value="">전체보기</option>
-        <option value="title">제목</option>
-        <option value="content">내용</option>
-      </select>
-      <input id="searchKeyword" type="text" th:field="*{keyword}" name="keyword" class="form-control"/>
-      <button class="btn btn-outline-primary btn-sm">검색</button>
-    </form>
-  </div>
-
   <!-- 검색 및 현재페이지 정보 -->
   <form action="/search" id="pageInfo" method="get">
     <input id="query" type="hidden" name="query" th:value="${searchQuery}">
     <input id="currentPageInfo" type="hidden" th:name="page" th:value="${pageMaker.currentPage}">
     <input type="hidden" th:name="size" th:value="${pageMaker.contentPerPage}">
-    <input id="sourceTypeInfo" type="hidden" th:name="sourceType" th:value="${innerSearchCondition.sourceType}">
-    <input class="searching" type="hidden" th:name="option" th:value="${innerSearchCondition.option}">
-    <input class="searching" type="hidden" th:name="keyword" th:value="${innerSearchCondition.keyword}">
   </form>
 
   <form id="dcRedirectForm" action="https://gall.dcinside.com/board/view" method="get">

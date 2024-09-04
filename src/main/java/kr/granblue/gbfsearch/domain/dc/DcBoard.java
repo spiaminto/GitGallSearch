@@ -2,7 +2,9 @@ package kr.granblue.gbfsearch.domain.dc;
 
 import jakarta.persistence.*;
 import kr.granblue.gbfsearch.domain.enums.SourceType;
+import kr.granblue.gbfsearch.util.ContentCleaner;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
+@BatchSize(size = 100)
 public class DcBoard {
 
     @Id
@@ -56,7 +59,7 @@ public class DcBoard {
      * @return cleanContent
      */
     public String getCleanedContent() {
-        return this.cleanContent;
+        return ContentCleaner.cleanContent(this.content);
         // 제목 +  내용만 추출
 //        Element rawElement = Jsoup.parse(this.content);
 //        rawElement.select("#dcappfooter").remove(); // 앱푸터 삭제
