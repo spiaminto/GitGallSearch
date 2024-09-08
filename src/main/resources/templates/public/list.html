@@ -5,56 +5,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>글 목록</title>
+  <title>그랑블루 갤러리 검색기</title>
   <style>
 
       #container {
           padding-top: 10px;
       }
 
+      /* 검색 창 */
       #searchHeader {
           font-weight: bold;
           text-align: center;
           font-size: 2rem;
       }
 
-      #searchContainer {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          height: 12vh;
-          margin: 0;
-          max-width: 100%;
-      }
-
       #searchForm {
+          margin: 0 auto;
           width: 100%;
+          max-width: 540px;
       }
 
-      /* 데스크톱 */
-      @media all and (min-width: 768px) {
-          #searchBox {
-              margin-top: 24px;
-              width: 70%;
-          }
-
-          #searchBtn {
-              width: 70px;
-          }
+      #searchForm button {
+          width: 15%;
+          min-width: 59px;
+          height: 100%;
+          vertical-align: inherit;
       }
 
-      /* 모바일 태블릿 */
-      @media all and (max-width: 767px) {
-          #searchBox {
-              margin-top: 24px;
-              width: 80%;
-          }
-
-          #searchBtn {
-              width: 70px;
-          }
-      }
+      /* 컨텐츠 없음 */
 
       #noneContent {
           margin: 0 auto;
@@ -66,6 +44,49 @@
           padding: 30px;
       }
 
+      /* 모바일용 보드 리스트 */
+
+      #boardList {
+          padding-left: 0;
+          margin-bottom: 1rem;
+      }
+
+      .board-info {
+          padding-left: 0;
+      }
+
+      .board-info .board-info-writer {
+          font-weight: bold;
+      }
+
+      #boardList .board-info > li {
+          float: left;
+          list-style: none;
+          font-size: 0.8rem;
+          text-overflow: ellipsis;
+      }
+
+      #boardList .board-info > li:last-child {
+          float: right;
+      }
+
+      #boardList .board-list-title {
+          font-size: 0.95rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          word-break: break-all;
+          display: inline-block;
+          width: 100%;
+          height: 30px; /* 약 23px 로 계산됨, overflow 고정용 */
+      }
+
+      #boardList .list-group-item {
+          padding: 0.7rem 0.5rem; /* bootstrap 원본 0.5rem, 1rem*/
+      }
+
+      /* 데스크톱용 보드 테이블 */
+
       #boardTable {
           table-layout: fixed;
           width: 100%;
@@ -74,12 +95,17 @@
 
       .board-title {
           text-align: left;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          overflow: hidden;
       }
 
-      .board-presentation-row .board-writer {
+      .board-title .readLink {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          word-break: break-all;
+      }
+
+
+      .board-table-body .board-writer {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
@@ -87,60 +113,91 @@
 
       .board-title #contentWrap {
           font-size: 0.9rem;
+          color: #808080;
       }
 
-      #write::after {
-          display: block;
-          content: none;
-          clear: both
-      }
-
-      #write > button {
-          float: right;
-      }
-
-      #content .sourceType-label {
+      .board-title .comment-count {
           color: grey;
       }
 
-      #content .comment-count {
+      /* 모바일, 데스크톱 공통속성 */
+      .comment-count {
           color: grey;
       }
 
-      #content table a {
+      .readLink {
           text-decoration: none;
           color: black;
+          display: inline-block;
+          height: 100%;
+          width: 100%;
       }
 
-      #content a:hover {
+      .readLink:hover {
           color: #0d6efd;
-          text-decoration: underline;
       }
 
-      #content .active a:hover {
+      #menu {
+          display: flex;
+      }
+
+      #menu>#showWithContentBtn {
+          margin-left: auto;
+      }
+
+      /* ? */
+
+      #paginationContainer .pagination-active {
+          background-color: #0d6efd;
           color: white;
       }
 
-      #searchForm {
-          max-width: 540px;
+      #paginationContainer .pagination-active a:hover {
+          color: white;
       }
 
-      #searchForm #searchKeyword, #searchForm #searchOption, #searchForm button {
-          display: inline-block;
+      /* 데스크톱 */
+      @media all and (min-width: 768px) {
+          #searchContainer {
+              margin: 24px auto 0;
+              width: 80%;
+          }
+
+          #searchBtn {
+              width: 70px;
+          }
+
+          #boardList {
+              display: none;
+          }
+
+          #showWithContentBtn {
+              display: block;
+          }
       }
 
-      #searchForm #searchKeyword {
-          width: 55%;
-      }
+      /* 모바일 태블릿 */
+      @media all and (max-width: 767px) {
+          body {
+              min-width: 320px;
+          }
 
-      #searchForm #searchOption {
-          width: 25%;
-      }
+          #searchContainer {
+              margin: 24px auto 0;
+              width: 85%;
+          }
 
-      #searchForm button {
-          width: 15%;
-          height: 100%;
-          vertical-align: inherit;
+          #searchBtn {
+              width: 70px;
+          }
+
+          #boardTable {
+              display: none;
+          }
+
+          #showWithContentBtn {
+              display: none;
+          }
       }
 
   </style>
@@ -153,54 +210,15 @@
   <script>
       $(function () {
 
-// alert (+ 홈화면 추가동작) 최우선동작.
-          let alertMessage = $("#globalAlertMessage").data("alertmessage");
-          let isLogout = $("#globalAlertMessage > #isLogout").data("islogout");
-          // console.log("alertMessage = " + alertMessage + " isLogout = " + isLogout);
-          if (alertMessage) {
-              if (alertMessage == "oauth2_add") {
-                  if (confirm("해당 소셜 계정으로 가입된 회원이 없습니다. 가입 하시겠습니까?")) {
-                      location.replace("/member/add-oauth");
-                  } else {
-                      location.replace("/logout");
-                  }
-                  return false;
-              }
-              alert(alertMessage);
-              if (isLogout) {
-                  location.replace("/logout");
-              }
-          }
-
-// 검색 클릭 (submit)
-          let searchForm = $("#searchForm");
-          $("#searchForm>button").on("click", function (event) {
-              event.preventDefault();
-
-              // option 확인 .find("selector")
-              if (!searchForm.find("option:selected").val()) {
-                  alert("검색종류를 선택하세요");
-                  return false;
-              }
-
-              // keyword 확인
-              if (!searchForm.find("input[name='keyword']").val()) {
-                  alert("키워드를 입력하세요");
-                  return false;
-              }
-
-              searchForm.submit();
-          })
-
 // 페이지네이션 액티브
-          let currentPage = $("#pageInfo>input:first-child").attr("value");
+          let currentPage = $("#paginationContainer").data("currentpage");
           let startNum = $(".page-link-number:first-child").attr("data-pagenum");
           // console.log("curentPage = " + currentPage + " startNum = " + startNum)
 
           if (currentPage != null) {
               $(".page-item-number").each(function () {
                   if (startNum == currentPage) {
-                      $(this).attr("class", "page-item page-item-number active");
+                      $(this).children(":first").addClass("pagination-active");
                   }
                   startNum++;
               })
@@ -209,19 +227,10 @@
 // 페이지네이션 링크 클릭
           $(".page-link").on("click", function (event) {
               event.preventDefault();
-
               // 요청할 page 설정
-              $("#pageInfo #currentPageInfo").attr("value", $(this).attr("data-pagenum"));
+              $("#searchFormPagenation #paginationMovePage").attr("value", $(this).attr("data-pagenum"));
 
-              // option 값 확인
-              let option = $("#pageInfo>input[name = 'option']").val();
-
-              // option 없음 = 검색 안함 -> url 빈 파라미터 안남게 지우기
-              if (!option) {
-                  $("#pageInfo>input.searching").remove();
-              }
-
-              $("#pageInfo").submit();
+              $("#searchFormPagenation").submit();
           })
 
 // 읽기 링크 클릭
@@ -229,15 +238,17 @@
               event.preventDefault();
               $("#dcRedirectForm #dcNum").val($(this).data("dcnum"));
               $("#dcRedirectForm").submit();
-
-
-              // let params = location.search;
-              // if (params) {
-              //     location.href = $(this).attr("href") + params;
-              // } else {
-              //     location.href = $(this).attr("href");
-              // }
           })
+
+// 글 내용 기본 숨김
+          $(".board-title #contentWrap").hide();
+
+// 글 내용 표시 버튼 클릭
+          $("#showWithContentBtn").on("click", function () {
+              $(".board-title #contentWrap").toggle();
+          })
+
+
       })
   </script>
 </head>
@@ -251,26 +262,28 @@
   </div>
 
   <h2 id="searchHeader">
-    그랑블루 검색기
+    그랑블루 갤러리 검색기
   </h2>
   <div id="searchContainer">
-    <div id="searchBox">
-      <form id="searchForm" action="/search">
-        <div class="input-group mb-3">
-          <input class="form-control" type="search" name="query" placeholder="검색어를 입력하세요." aria-label="Search"
-                 th:value="${searchForm.getQuery()}">
-          <button id="searchBtn" class="btn btn-outline-primary" type="submit">검색</button>
+    <form id="searchForm" action="/search">
+      <div class="input-group mb-3">
+        <input class="form-control" type="search" name="query" placeholder="검색어를 입력하세요." aria-label="Search"
+               th:value="${searchForm.getQuery()}">
+        <button id="searchBtn" class="btn btn-outline-primary" type="submit">검색</button>
+      </div>
+      <div class="input-group mb-3">
+        <div class="form-check">
+          <input id="recommendedOnly" class="form-check-input" type="checkbox" name="recommendedOnly"
+                 th:checked="${searchForm.isRecommendedOnly()}">
         </div>
-        <div class="input-group mb-3">
-          <div class="form-check">
-            <input id="recommendedOnly" class="form-check-input" type="checkbox" name="recommendedOnly"
-            th:checked="${searchForm.isRecommendedOnly()}">
-          </div>
-          <label for="recommendedOnly" class="form-check-label">개념글만 보기</label>
-        </div>
-      </form>
-    </div>
+        <label for="recommendedOnly" class="form-check-label">개념글만</label>
+      </div>
+    </form>
   </div>
+  <div id="menu">
+    <button id="showWithContentBtn" class="btn btn-outline-primary">글 내용 표시</button>
+  </div>
+
 
   <hr>
 
@@ -279,6 +292,25 @@
     <h3> 조회 결과가 없습니다. </h3>
     </p>
   </div>
+
+  <div id="mobileContent" th:if="${!boardList.isEmpty()}">
+
+    <ul id="boardList" class="list-group">
+      <li th:each="item : ${boardList}" class="mobile-board-item list-group-item">
+        <a class="readLink" href="read.html" th:data-dcnum="${item.getDcNum()}">
+          <span class="board-list-title" th:text="${item.title}"></span>
+        </a>
+        <ul class="board-info clearfix">
+          <li class="board-info-writer" th:text="${item.writer}"></li>
+          <li class="board-info-regDate" th:text="${'&nbsp' + #temporals.format(item.regDate, 'yy.MM.dd')}"></li>
+          <li class="board-info-viewCnt" th:text=" ${'&nbsp조회&nbsp' + item.viewCnt}"></li>
+          <li class="board-info-recommendCnt" th:text="${'&nbsp추천&nbsp' + item.recommendCnt}"></li>
+          <li class="board-info-commentCnt" th:text="${'&nbsp댓글&nbsp' + item.commentCnt}"></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
 
   <div id="content" th:if="${!boardList.isEmpty()}">
     <table id="boardTable" class="table">
@@ -301,28 +333,25 @@
         <th>작성시각</th>
       </tr>
       </thead>
-      <tbody class="board-presentation-row">
+      <tbody class="board-table-body">
       <tr th:each="item : ${boardList}"
           th:with="currentPage=${param.currentPage == null} ? 1 : ${param.currentPage}">
 
         <td id="boardNum"
-            th:text="${pageMaker.totalCount - pageMaker.contentPerPage * (pageMaker.currentPage - 1) - itemStat.index}">
+            th:text="${pageMaker.contentPerPage * (pageMaker.currentPage - 1) + itemStat.index + 1}">
           id
         </td>
 
         <td class="board-title">
           <div id="titleWrap">
-            <span class="sourceType-label"></span>
-            <a class="readLink" href="read.html" th:data-dcnum="${item.getDcNum()}"
-               th:text="${item.title}">title</a>
-            <span class="comment-count" th:if="${item.commentCnt > 0}"
-                  th:text="${' (' + item.commentCnt + ')'}"> </span>
+            <a class="readLink" href="read.html" th:data-dcnum="${item.getDcNum()}">
+              <span th:text="${item.title}">제목</span>
+              <span class="comment-count" th:text="${'&nbsp(' + item.commentCnt + ')'}">0</span>
+            </a>
           </div>
           <div id="contentWrap" th:if="${item.content != null}">
-            <span>&nbsp;⤷&nbsp; </span>
             <a class="readLink" href="list.html" th:data-dcnum="${item.getDcNum()}"
-               th:text="${#strings.abbreviate(item.getCleanedContent(), 30)}"
-
+               th:text="${'&nbsp⤷&nbsp' + #strings.abbreviate(item.getCleanedContent(), 30)}"
             >글 내용</a>
           </div>
         </td>
@@ -346,10 +375,10 @@
     </table>
 
 
-    <!-- pagination:  onclick 시 자바스크립트 실행을 통해 pageInfo 를 submit 하게됨 -->
+    <!-- pagination:  onclick 시 자바스크립트 실행을 통해 #searchFormPagenation 를 submit 하게됨 -->
     <div class="container">
       <ul class="pagination col justify-content-center" id="paginationContainer"
-          th:data-pagesize="${pageMaker.contentPerPage}">
+          th:data-pagesize="${pageMaker.contentPerPage}" th:data-currentpage="${pageMaker.getCurrentPage()}">
         <li class="page-item" th:if="${pageMaker.isPrevBt}">
           <a href="list.html"
              th:data-pageNum="${(pageMaker.startPageNum)-1}" class="page-link">&laquo;</a>
@@ -368,17 +397,12 @@
     </div>
   </div>
 
-  <!-- 글쓰기 버튼 -->
-  <div class="float-right" id="write">
-    <button type="button" class="btn btn-outline-primary" th:onclick="|location.href='@{/admin/board/write}'|">글쓰기
-    </button>
-  </div>
-
   <!-- 검색 및 현재페이지 정보 -->
-  <form action="/search" id="pageInfo" method="get">
-    <input id="query" type="hidden" name="query" th:value="${searchQuery}">
-    <input id="currentPageInfo" type="hidden" th:name="page" th:value="${pageMaker.currentPage}">
-    <input type="hidden" th:name="size" th:value="${pageMaker.contentPerPage}">
+  <form action="/search" id="searchFormPagenation" method="get">
+    <input id="paginationSearchQuery" type="hidden" name="query" th:value="${searchForm.getQuery()}">
+    <input id="paginationRecommendedOnly" type="hidden" name="recommendedOnly" th:value="${searchForm.isRecommendedOnly()}">
+    <input id="paginationMovePage" type="hidden" th:name="page" th:value="${pageMaker.currentPage}">
+    <input id="paginationPageSize" type="hidden" th:name="size" th:value="${pageMaker.contentPerPage}">
   </form>
 
   <form id="dcRedirectForm" action="https://gall.dcinside.com/board/view" method="get">

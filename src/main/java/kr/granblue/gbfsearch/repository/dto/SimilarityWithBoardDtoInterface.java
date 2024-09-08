@@ -1,6 +1,6 @@
 package kr.granblue.gbfsearch.repository.dto;
 
-import kr.granblue.gbfsearch.domain.enums.SourceType;
+
 
 import java.time.LocalDateTime;
 
@@ -17,8 +17,6 @@ public interface SimilarityWithBoardDtoInterface {
     Long getViewCnt();
     Long getCommentCnt();
     Long getRecommendCnt();
-
-    SourceType getSourceType();
 
     boolean getRecommended();
 

@@ -6,4 +6,5 @@ import lombok.Data;
 public class SearchForm {
     private String query;
     private boolean recommendedOnly;
+    private boolean showWithContent;
 }

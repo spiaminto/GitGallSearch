@@ -1,4 +1,4 @@
-package kr.granblue.gbfsearch.domain.dc;
+package kr.granblue.gbfsearch.domain;
 
 import jakarta.persistence.*;
 import lombok.*;

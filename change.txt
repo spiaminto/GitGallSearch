@@ -1,0 +1,9 @@
+
+commit 2
+    datasource 를 postgre 와 mysql 로 분리
+
+commit 3
+    DB 를 aws 의 rds 로 통합 (postgres)
+    datasource 통합 및 분리등록 코드 삭제
+    필요 없는 코드 삭제
+    개념글만 검색 기능 수정

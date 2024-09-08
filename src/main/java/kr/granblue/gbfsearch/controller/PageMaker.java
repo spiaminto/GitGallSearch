@@ -18,8 +18,6 @@ public class PageMaker{
     private long contentPerPage;     // 페이지당 content 갯수 ( = Criteria.contentPerPage)
     private long totalCount;     // 조회된 전체 Content 갯수
 
-//    private String categoryCode;    // url 파라미터로 사용
-
     private int startPageNum;       // 현제 페이지의 페이지네이션 시작 페이지 번호
     private int endPageNum;         // 현재 페이지의 페이지네이션 끝 페이지 번호
     private int displayPageNum = 5;     // 현재 페이지네이션 영역에서 보여줄 페이지 번호의 갯수
@@ -35,12 +33,6 @@ public class PageMaker{
         this.totalCount = pagedContent.getTotalElements();
         log.info("pageMaker = {}", this);
         calcPage();
-    }
-
-
-    public PageMaker(Pageable pageable) {
-        this.currentPage = pageable.getPageNumber();
-        this.contentPerPage = pageable.getPageSize();
     }
 
     /**

@@ -1,6 +1,6 @@
 package kr.granblue.gbfsearch.repository.dto;
 
-import kr.granblue.gbfsearch.domain.dc.DcBoard;
+import kr.granblue.gbfsearch.domain.DcBoard;
 import lombok.Data;
 
 @Data
@@ -22,7 +22,6 @@ public class SimilarityWithBoardDto {
                         .viewCnt(similarityWithBoardDtoInterface.getViewCnt())
                         .commentCnt(similarityWithBoardDtoInterface.getCommentCnt())
                         .recommendCnt(similarityWithBoardDtoInterface.getRecommendCnt())
-                        .sourceType(similarityWithBoardDtoInterface.getSourceType())
                         .recommended(similarityWithBoardDtoInterface.getRecommended())
                         .build()
         );

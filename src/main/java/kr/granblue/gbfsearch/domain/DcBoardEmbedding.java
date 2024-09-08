@@ -1,4 +1,4 @@
-package kr.granblue.gbfsearch.domain.dc;
+package kr.granblue.gbfsearch.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,7 +7,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "dc_board_embedding")
