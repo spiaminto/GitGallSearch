@@ -1,6 +1,6 @@
 # 그랑블루 판타지 갤러리 검색기
 ## 개요
-### [->사이트로 이동](http://spiaminto.ap-northeast-2.elasticbeanstalk.com/spiachat/lobby)
+### [->사이트로 이동](http://spia.ap-northeast-2.elasticbeanstalk.com/)
 
 그랑블루 판타지 갤러리의 일부 글을 유사도 기반으로 검색할 수 있는 서비스 입니다.<br>
 현재 2024-01-04 까지 약 15만개의 글을 검색 할 수 있습니다.<br>
