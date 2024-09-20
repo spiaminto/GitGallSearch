@@ -16,7 +16,7 @@ Github 갤러리의 일부 글을 유사도 기반으로 검색할 수 있는 �
 검색 결과를 누르면 Github 갤러리의 해당 글로 이동합니다.
 
 #### 1.2 개념글만 검색
-<img alt='concept' src='https://github.com/user-attachments/assets/3b8590fd-3c9d-4ace-9122-5068928bf4e9' width="90%">
+<img alt='concept' src='https://github.com/user-attachments/assets/b62d798f-90a7-4a97-adc5-49b683589d1a' width="90%">
 
 '개념글만 검색' 체크박스를 선택하면, 개념글만 검색합니다. (최대 50개)  
 속도가 다소 느리고, 검색 정확도가 떨어질 수 있습니다.
