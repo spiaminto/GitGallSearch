@@ -15,3 +15,7 @@ commit 4
 
 commit 5
     데이터 변경
+
+commit 6
+    html 수정
+    리드미 작성

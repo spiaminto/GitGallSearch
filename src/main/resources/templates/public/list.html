@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>그랑블루 갤러리 검색기</title>
+  <title>Github 갤러리 검색기</title>
   <style>
 
       #container {
@@ -262,7 +262,7 @@
   </div>
 
   <h2 id="searchHeader">
-    그랑블루 갤러리 검색기
+    Github 갤러리 검색기
   </h2>
   <div id="searchContainer">
     <form id="searchForm" action="/search">
@@ -405,8 +405,8 @@
     <input id="paginationPageSize" type="hidden" th:name="size" th:value="${pageMaker.contentPerPage}">
   </form>
 
-  <form id="dcRedirectForm" action="https://gall.dcinside.com/board/view" method="get">
-    <input id="dcGallName" type="hidden" name="id" th:value="granblue">
+  <form id="dcRedirectForm" action="https://gall.dcinside.com/mgallery/board/view" method="get">
+    <input id="dcGallName" type="hidden" name="id" th:value="github">
     <input id="dcNum" type="hidden" name="no" value="1">
   </form>
 
