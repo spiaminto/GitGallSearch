@@ -5,7 +5,7 @@
 Github 갤러리의 일부 글을 OpenAI 텍스트 임베딩 유사도 기반으로 검색할 수 있는 서비스 입니다.<br>
 현재 약 5만개의 글을 검색 할 수 있습니다.<br>
 
-**[자세히 알아보기]**(https://github.com/spiamint/GitGallSearchBack)
+### [자세히 알아보기](https://github.com/spiamint/GitGallSearchBack)
 
 ## 1. 사용방법
 #### 1.1 검색
