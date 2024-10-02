@@ -236,7 +236,8 @@
 // 읽기 링크 클릭
           $(".readLink").on("click", function (event) {
               event.preventDefault();
-              $("#dcRedirectForm #dcNum").val($(this).data("dcnum"));
+              let dcNum = $(this).data("dcnum");
+              $("#dcRedirectForm #dcNum").val(dcNum);
               $("#dcRedirectForm").submit();
           })
 
