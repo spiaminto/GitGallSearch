@@ -1,6 +1,6 @@
 # Github 갤러리 검색기
 ## 개요
-### [->사이트로 이동](http://spia.ap-northeast-2.elasticbeanstalk.com/) (오전 8:00 ~ 오후 10:00 까지 이용 가능합니다.)
+### [->사이트로 이동](http://spia.ap-northeast-2.elasticbeanstalk.com/gitgallsearch) (오전 8:00 ~ 오후 10:00 까지 이용 가능합니다.)
 
 Github 갤러리의 일부 글을 OpenAI 텍스트 임베딩 유사도 기반으로 검색할 수 있는 서비스 입니다.<br>
 현재 약 5만개의 글을 검색 할 수 있습니다.<br>
